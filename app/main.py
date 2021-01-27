@@ -23,6 +23,7 @@ def processActual(line):
     weather_info['wind_deg'] = recs[11]
     weather_info['wind_speed'] = recs[12]
     weather_info['wind_gust'] = recs[13]
+    weather_info['rain'] = recs[14]
     weather_info['dew_point'] = recs[16]
     weather_info['lux'] = recs[18]
     weather_info['uvi'] = recs[19]
@@ -44,7 +45,7 @@ def main_loop():
         st_resultsActual = os.stat(actuald_log_filename)
         st_sizeActual = st_resultsActual[6]
         fileActual.seek(st_sizeActual)
-        print("Seek to end of " + actuald_log_filename)
+        print("Seek to end of " + actuald_log_filename + ' ...')
 
         while True:
             whereActual = fileActual.tell()
