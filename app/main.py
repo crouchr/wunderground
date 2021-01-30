@@ -1,34 +1,14 @@
 import traceback
 import os
 import time
+
 import definitions
+import process_actuald_rec
+import creds
+import call_pws_api
+
+# only code specific to a PWS Cloud service
 import wunderground
-import wunderground_api
-
-
-def processActual(line):
-    """
-    Process a new entry taken from Actual Log
-    Maintain the same units and names as used in SQL database i.e. API-agnostic
-    :param line:
-    :return:
-    """
-    weather_info = {}
-
-    print(line.rstrip('\n'))
-    recs = line.split('\t')
-    weather_info['pressure'] = recs[8]
-    weather_info['temp'] = recs[9]
-    weather_info['humidity'] = recs[10]
-    weather_info['wind_deg'] = recs[11]
-    weather_info['wind_speed'] = recs[12]
-    weather_info['wind_gust'] = recs[13]
-    weather_info['rain'] = recs[14]
-    weather_info['dew_point'] = recs[16]
-    weather_info['lux'] = recs[18]
-    weather_info['uvi'] = recs[19]
-
-    return weather_info
 
 
 def main_loop():
@@ -37,10 +17,13 @@ def main_loop():
         fileActual = open(actuald_log_filename, 'r')
 
         # fixme : temp debugging code
-        # lineActual = fileActual.readlines()
-        # weather_info = processActual(lineActual[0])
-        # wunderground_info = wunderground.create_wunderground_info(weather_info)
-        # status_code = wunderground_api.update_wunderground(wunderground_info)
+        import sys
+        lineActual = fileActual.readlines()
+        weather_info = process_actuald_rec.processActual(lineActual[0])
+        wunderground_info = wunderground.create_wunderground_info(weather_info)
+        pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
+        status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
+        sys.exit('debugging so exit')
 
         st_resultsActual = os.stat(actuald_log_filename)
         st_sizeActual = st_resultsActual[6]
@@ -51,16 +34,15 @@ def main_loop():
             whereActual = fileActual.tell()
             lineActual = fileActual.readline()
             if not lineActual:		# no data in feed
-                # print("nothing in Actual Log to process...")
                 fileActual.seek(whereActual)
             else:			        # new data has been added to log file
-                print("*** NEW EVENT in Actual Log to process")
+                print("*** NEW EVENT in " + actuald_log_filename + " to process")
                 weather_info = processActual(lineActual)
                 wunderground_info = wunderground.create_wunderground_info(weather_info)
-                status_code = wunderground_api.update_wunderground(wunderground_info)
-                print('wunderground API status_code : ' + status_code.__str__())
+                pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
+                status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
 
-            time.sleep(10)
+            time.sleep(10)          # time to wait until polling for another record
 
     except Exception as e:
         traceback.print_exc()
