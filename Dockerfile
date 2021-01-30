@@ -6,6 +6,7 @@ LABEL description="Wunderground API connector daemon"
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get -y update
+RUN apt-get -y upgrade
 RUN apt-get -y install joe
 
 # Install Python dependencies
