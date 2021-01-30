@@ -2,7 +2,8 @@ FROM python:3.8.5-buster
 LABEL author="Richard Crouch"
 LABEL description="Wunderground API connector daemon"
 
-# Generate logs in unbuffered mode
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/London
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get -y update
