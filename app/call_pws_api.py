@@ -19,7 +19,7 @@ def update_pws_api(pws_name, pws_request):
 
         while True:
             response = requests.get(pws_request)
-            print('API request sent to ' + pws_name)
+            print('API request for ' + pws_name + ' is ' + pws_request.__str__())
             if response.status_code != 200:
                 attempt += 1
                 print('Error : attempt=' + attempt.__str__() + ' accessing ' + pws_name + ' API, status_code=' + response.status_code.__str__())
