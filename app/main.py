@@ -17,13 +17,13 @@ def main_loop():
         fileActual = open(actuald_log_filename, 'r')
 
         # fixme : temp debugging code
-        import sys
-        lineActual = fileActual.readlines()
-        weather_info = process_actuald_rec.processActual(lineActual[0])
-        wunderground_info = wunderground.create_wunderground_info(weather_info)
-        pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
-        status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
-        sys.exit('debugging so exit')
+        # import sys
+        # lineActual = fileActual.readlines()
+        # weather_info = process_actuald_rec.processActual(lineActual[0])
+        # wunderground_info = wunderground.create_wunderground_info(weather_info)
+        # pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
+        # status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
+        # sys.exit('debugging so exit')
 
         st_resultsActual = os.stat(actuald_log_filename)
         st_sizeActual = st_resultsActual[6]
@@ -37,7 +37,7 @@ def main_loop():
                 fileActual.seek(whereActual)
             else:			        # new data has been added to log file
                 print("*** NEW EVENT in " + actuald_log_filename + " to process")
-                weather_info = processActual(lineActual)
+                weather_info = process_actuald_rec.processActual(lineActual)
                 wunderground_info = wunderground.create_wunderground_info(weather_info)
                 pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
                 status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
