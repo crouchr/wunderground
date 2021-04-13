@@ -16,14 +16,16 @@ def main_loop():
         actuald_log_filename = definitions.WEATHER_INFO_DIR + 'actuald.tsv'
         fileActual = open(actuald_log_filename, 'r')
 
+        debug = False
+        if debug:
         # fixme : temp debugging code
-        # import sys
-        # lineActual = fileActual.readlines()
-        # weather_info = process_actuald_rec.processActual(lineActual[0])
-        # wunderground_info = wunderground.create_wunderground_info(weather_info)
-        # pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
-        # status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
-        # sys.exit('debugging so exit')
+            import sys
+            lineActual = fileActual.readlines()
+            weather_info = process_actuald_rec.processActual(lineActual[0])
+            wunderground_info = wunderground.create_wunderground_info(weather_info)
+            pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
+            status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
+            sys.exit('debugging so exit')
 
         st_resultsActual = os.stat(actuald_log_filename)
         st_sizeActual = st_resultsActual[6]

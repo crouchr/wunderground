@@ -1,4 +1,6 @@
 # see https://dbxit.com/uploading-to-weatherunderground-using-http for all fields
+# make this use cumulusmx to take the load off cumumulus and see if helps with station lockup
+
 def create_wunderground_info(weather_info):
     """
     Perform necessary conversions to align to Wunderground API
@@ -32,7 +34,6 @@ def create_wunderground_request(wunderground_info, id, password):
 
     params_str = ""
     wu_url = 'https://weatherstation.wunderground.com/weatherstation/updateweatherstation.php?'
-    # wu_creds = 'ID=' + id + '&PASSWORD=' + 'nopasswr232'
     wu_creds = 'ID=' + id + '&PASSWORD=' + password
 
     date_str = '&dateutc=now'
