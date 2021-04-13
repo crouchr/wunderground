@@ -16,7 +16,7 @@ def main_loop():
         actuald_log_filename = definitions.WEATHER_INFO_DIR + 'actuald.tsv'
         fileActual = open(actuald_log_filename, 'r')
 
-        debug = False
+        debug = False   # False True
         if debug:
         # fixme : temp debugging code
             import sys

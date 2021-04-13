@@ -7,6 +7,7 @@ def processActual(line):
     :return:
     """
     weather_info = {}
+
     line = line.rstrip('\n')
     print(line)
     recs = line.split('\t')
@@ -26,5 +27,10 @@ def processActual(line):
     weather_info['synopsis_code'] = recs[21]
     # weather_info['coverage'] = recs[22]
     # weather_info['uuid'] = recs[23]
+
+    # Hard-coded for the moment to check it is processed by weather underground
+    weather_info['weather_text_metar'] = '+RA'
+    weather_info['clouds_text'] = 'BKN'
+    weather_info['visibility'] = 1000
 
     return weather_info

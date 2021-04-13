@@ -19,6 +19,8 @@ def create_wunderground_info(weather_info):
     wunderground_info['solarradiation'] = round(float(weather_info['lux']) * 0.0079, 2)
     wunderground_info['UV'] = weather_info['uvi']
     wunderground_info['rainin'] = float(weather_info['rain']) * 0.0393701
+    wunderground_info['weather'] = weather_info['weather_text_metar']
+    wunderground_info['clouds'] = weather_info['clouds_text']
 
     return wunderground_info
 
