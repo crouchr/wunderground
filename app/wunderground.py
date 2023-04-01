@@ -1,6 +1,6 @@
 # see https://dbxit.com/uploading-to-weatherunderground-using-http for all fields
 # make this use cumulusmx to take the load off cumumulus and see if helps with station lockup
-
+# this was used for actuald
 #def create_wunderground_info(weather_info):
 #    """
 #    Perform necessary conversions to align to Wunderground API
@@ -29,8 +29,8 @@ def create_wunderground_request(wunderground_info, station_id, station_key):
     """
 
     :param wunderground_info:
-    :param id:
-    :param password:
+    :param station_id:
+    :param station_key:
     :return:
     """
 

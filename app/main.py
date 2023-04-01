@@ -19,16 +19,20 @@ def _process_mqtt_msg(client, userdata, msg):
     :param msg:
     :return:
     """
-    print('---------------------------------')
-    print('entered _process_mqtt_msg()')
-    print(time.ctime() + ' : received MQTT msg via topic=' + msg.topic.__str__())
-    mqtt_dict = ast.literal_eval(msg.payload.decode())
-    pprint(mqtt_dict)
 
-    wunderground_info = process_meteo_rec.create_wunderground_rec(mqtt_dict)
-    pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
-    status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
+    try:
+        print('---------------------------------')
+        print('entered _process_mqtt_msg()')
+        print(time.ctime() + ' : received MQTT msg via topic=' + msg.topic.__str__())
+        mqtt_dict = ast.literal_eval(msg.payload.decode())
+        pprint(mqtt_dict)
 
+        wunderground_info = process_meteo_rec.create_wunderground_rec(mqtt_dict)
+        pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
+        status_code = call_pws_api.update_pws_api('Weather Underground', pws_api_request)
+
+    except Exception as e:
+        print(f'_process_mqtt_msg() : exception : {e}')
 
 
 def connect_mqtt(broker_host, broker_port, client_id) -> mqtt_client:

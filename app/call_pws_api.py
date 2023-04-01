@@ -3,10 +3,11 @@ import requests
 import traceback
 import time
 
-import creds
-
 
 # add some exception handling
+# Works for any online API
+# This function works but needs more testing to verify is network is down
+# how to increase backoff period in requests ?
 def update_pws_api(pws_name, pws_request):
     """
 
@@ -18,8 +19,10 @@ def update_pws_api(pws_name, pws_request):
         attempt = 0
 
         while True:
-            response = requests.get(pws_request)
             print('API request for ' + pws_name + ' is ' + pws_request.__str__())
+            print('send request to API...')
+            response = requests.get(pws_request)    # if network down, this will trigger an exception ?
+
             if response.status_code != 200:
                 attempt += 1
                 print('Error : attempt=' + attempt.__str__() + ' accessing ' + pws_name + ' API, status_code=' + response.status_code.__str__())
@@ -40,5 +43,6 @@ def update_pws_api(pws_name, pws_request):
 
     # something really bad
     except Exception as e:
+        print(f'update_pws_api() : exception {e}')
         traceback.print_exc()
-        return response.status_code
+        return None     # if network unreachable, there will not even be a stats code value

@@ -1,23 +1,27 @@
 # API independent
 from pprint import pprint
+
+
+# wunderground takes your absolute pressure and adjusts it to sea-level
+# it knows your elevation
 def create_wunderground_rec(mqtt_dict):
     """
-    :param line:
+    :param mqtt_dict:
     :return:
     """
 
     wunderground_info = {}
 
-    # Measured
+    # Measured - Wunderground seems to want 'US' units, e.g. inches for pressure and Farenheit for temperatures
     wunderground_info['baromin'] = round(float(mqtt_dict['pressure_abs']) * 0.030, 3)   # inches
     wunderground_info['tempf'] = round(float(mqtt_dict['temp_c_smoothed']) * (9.0/5.0) + 32.0, 1)
-    wunderground_info['humidity'] = mqtt_dict['humidity_smoothed'] # + '.0'
+    wunderground_info['humidity'] = mqtt_dict['humidity_smoothed']
     wunderground_info['solarradiation'] = round(float(mqtt_dict['lux']) * 0.0079, 2)
 
     # Derived
     wunderground_info['dewptf'] = round(float(mqtt_dict['dew_point']) * (9.0 / 5.0) + 32.0, 1)
 
-    print('Data to be sent to Wunderground (Imperial format)')
+    print('Data to be sent to Wunderground (Imperial format):')
     pprint(wunderground_info)
 
     return wunderground_info
