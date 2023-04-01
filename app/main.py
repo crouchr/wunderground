@@ -2,13 +2,13 @@
 import ast
 from paho.mqtt import client as mqtt_client
 from pprint import pprint
-import time
 
 # my funcs
 import creds        # FIXME : set in environment
 import wunderground
 import process_meteo_rec
 import call_pws_api
+import get_env_app
 
 
 def _process_mqtt_msg(client, userdata, msg):
@@ -72,8 +72,11 @@ if __name__ == '__main__':
 
     topic = "meteo/metrics"
 
-    broker_host = 'j1900'
-    broker_port = 1883
+    # broker_host = 'j1900'
+    # broker_port = 1883
+
+    broker_host = get_env_app.get_mqttd_host()
+    broker_port = get_env_app.get_mqttd_port()
 
     # generate client ID with pub prefix randomly
     client_id = f'wunderground-{random.randint(0, 100)}'
@@ -84,7 +87,7 @@ if __name__ == '__main__':
 
     while True:
         try:
-            print('Connect to MQTT...')
+            print(f'Connect to MQTT host {broker_host} on port {broker_port}...')
             client = connect_mqtt(broker_host, broker_port, client_id)
             subscribe_topic(client, topic, called_function)           # infinite loop
             client.loop_forever()
