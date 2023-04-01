@@ -21,9 +21,10 @@ def _process_mqtt_msg(client, userdata, msg):
     """
 
     try:
-        print('---------------------------------')
+        print('--------------------------------------------------------------')
+        print(time.ctime())
         print('entered _process_mqtt_msg()')
-        print(time.ctime() + ' : received MQTT msg via topic=' + msg.topic.__str__())
+        print('received MQTT msg via topic=' + msg.topic.__str__())
         mqtt_dict = ast.literal_eval(msg.payload.decode())
         pprint(mqtt_dict)
 
@@ -78,11 +79,12 @@ if __name__ == '__main__':
     client_id = f'wunderground-{random.randint(0, 100)}'
     print('client_id=' + client_id.__str__())
 
-    # Name of function to call when MQTT message is read from topic
+    # name of function to call when MQTT message is read from topic
     called_function = _process_mqtt_msg
 
     while True:
         try:
+            print('Connect to MQTT...')
             client = connect_mqtt(broker_host, broker_port, client_id)
             subscribe_topic(client, topic, called_function)           # infinite loop
             client.loop_forever()
