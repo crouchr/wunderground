@@ -30,7 +30,7 @@ def update_pws_api(pws_name, pws_request):
                 time.sleep(backoff_secs)      # back off for x seconds
                 continue
             else:
-                print('Updated ' + pws_name + ' via API access OK, status_code=' + response.status_code.__str__())
+                print('Updated '+ pws_name + ' via API access OK, status_code=' + response.status_code.__str__())
                 break
 
         if attempt == max_attempts:
