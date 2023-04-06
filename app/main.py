@@ -26,7 +26,7 @@ def _process_mqtt_msg(client, userdata, msg):
         print('entered _process_mqtt_msg()')
         print('received MQTT msg via topic=' + msg.topic.__str__())
         mqtt_dict = ast.literal_eval(msg.payload.decode())
-        pprint(mqtt_dict)
+        #pprint(mqtt_dict)
 
         wunderground_info = process_meteo_rec.create_wunderground_rec(mqtt_dict)
         pws_api_request = wunderground.create_wunderground_request(wunderground_info, creds.station_id, creds.station_key)
@@ -72,14 +72,11 @@ if __name__ == '__main__':
 
     topic = "meteo/metrics"
 
-    # broker_host = 'j1900'
-    # broker_port = 1883
-
     broker_host = get_env_app.get_mqttd_host()
     broker_port = get_env_app.get_mqttd_port()
 
     # generate client ID with pub prefix randomly
-    client_id = f'wunderground-{random.randint(0, 100)}'
+    client_id = f'meteod-wunderground-{random.randint(0, 100)}'
     print('client_id=' + client_id.__str__())
 
     # name of function to call when MQTT message is read from topic

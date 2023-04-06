@@ -16,10 +16,11 @@ def create_wunderground_rec(mqtt_dict):
     wunderground_info['baromin'] = round(float(mqtt_dict['pressure_abs']) * 0.030, 3)   # inches
     wunderground_info['tempf'] = round(float(mqtt_dict['temp_c_smoothed']) * (9.0/5.0) + 32.0, 1)
     wunderground_info['humidity'] = mqtt_dict['humidity_smoothed']
-    wunderground_info['solarradiation'] = round(float(mqtt_dict['lux']) * 0.0079, 2)
+    #wunderground_info['solarradiation'] = round(float(mqtt_dict['lux_smoothed']) * 0.0079, 2)
+    wunderground_info['solarradiation'] = float(mqtt_dict['solar_watts_smoothed'])
 
     # Derived
-    wunderground_info['dewptf'] = round(float(mqtt_dict['dew_point']) * (9.0 / 5.0) + 32.0, 1)
+    wunderground_info['dewptf'] = round(float(mqtt_dict['dew_point_c']) * (9.0 / 5.0) + 32.0, 1)
 
     print('Data to be sent to Wunderground (Imperial format):')
     pprint(wunderground_info)
